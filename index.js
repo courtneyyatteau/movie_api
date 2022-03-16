@@ -19,7 +19,11 @@ let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
 
-mongoose.connect("mongodb://localhost:27017/flixFolioDB", {
+/*mongoose.connect("mongodb://localhost:27017/flixFolioDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});*/
+mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -326,6 +330,11 @@ app.get("/documentation", (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
+});
+
+//Welcome Message
+app.get("/", (req, res) => {
+  res.send("Welcome to Flix Folio!");
 });
 
 const port = process.env.PORT || 8080;
