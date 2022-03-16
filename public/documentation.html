@@ -41,8 +41,6 @@
           Example:
           <pre><code>
             {
-              title: '',
-              description: '',
               genre: {
                 name: '',
                 description: ''
@@ -51,7 +49,12 @@
                 name: '',
                 bio: '',
                 birthdate: ''
-              }
+              },
+              id: '',
+              title: '',
+              description: '',
+              imagepath: '',
+              featured: ''
             }
           </code></pre>
         </td>
@@ -70,7 +73,6 @@
           Example:
           <pre><code>
             {
-              name: '',
               description: ''
             }
           </code></pre>
@@ -81,7 +83,7 @@
         <td>
           Return data about a director (bio, birth year, death year) by name
         </td>
-        <td>/movies/directors/:director</td>
+        <td>/movies/directors/:name</td>
         <td>GET</td>
         <td>director</td>
         <td>
@@ -102,7 +104,7 @@
         <td>Allow new users to register</td>
         <td>/users</td>
         <td>POST</td>
-        <td>genre</td>
+        <td>NONE</td>
         <td>
           A JSON object holding data about new user that was added. <br />
           Example:
@@ -139,10 +141,46 @@
       </tr>
 
       <tr>
-        <td>Allow users to update their user info (username)</td>
-        <td>/users/:id</td>
+        <td>Return a list of ALL the users.</td>
+        <td>/users</td>
+        <td>GET</td>
+        <td>NONE</td>
+        <td>A JSON object holding data about all the users.</td>
+        <td>NONE</td>
+      </tr>
+
+      <tr>
+        <td>Return data about a single user by username.</td>
+        <td>/users/:username</td>
+        <td>GET</td>
+        <td>username</td>
+        <td>
+          A JSON object holding data about the user.
+          <pre><code>
+            {
+              "id": '',
+              "userName": '',
+              "password": '',
+              "email": '',
+              "birthdate": '',
+              "FavoriteMovies": [
+                '',
+                ''
+              ]
+            }
+          </code></pre>
+        </td>
+        <td>NONE</td>
+      </tr>
+
+      <tr>
+        <td>
+          Allow users to update their user info (username, password, email,
+          and/or birthdate)
+        </td>
+        <td>/users/:Username</td>
         <td>PUT</td>
-        <td>id</td>
+        <td>username</td>
         <td>
           A JSON object holding data about user's new info. <br />
           Example:
@@ -179,9 +217,9 @@
       </tr>
       <tr>
         <td>Allow users to add a movie to their list of favorites</td>
-        <td>/users/:id/:movie</td>
+        <td>/users/:Username/:MovieID</td>
         <td>POST</td>
-        <td>id, movie</td>
+        <td>username, movieid</td>
         <td>
           A message stating the movie was added successfully (or not, if
           unsuccessful)
@@ -206,9 +244,9 @@
       </tr>
       <tr>
         <td>Allow users to remove a movie from their list of favorites</td>
-        <td>/users/:id/:movie</td>
+        <td>/users/:Username/:MovieID</td>
         <td>DELETE</td>
-        <td>id, movie</td>
+        <td>username, movieid</td>
         <td>
           A message stating the user's movie has been deleted (or not, if
           unsuccessful)
@@ -217,7 +255,7 @@
       </tr>
       <tr>
         <td>Allow existing users to deregister</td>
-        <td>/users/:id</td>
+        <td>/users/:Username</td>
         <td>DELETE</td>
         <td>NONE</td>
         <td>
