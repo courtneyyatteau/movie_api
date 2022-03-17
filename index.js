@@ -46,7 +46,7 @@ app.get(
 
 //get a movie by title
 app.get(
-  "/movies/:Title",
+  "/movies/movie/:Title",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.findOne({ Title: req.params.Title })
@@ -76,6 +76,22 @@ app.get(
         } else {
           res.status(400).send("Genre does not exist.");
         }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
+
+//get all movies based on genre
+app.get(
+  "/movies/:genreName",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.find({ "Genre.Name": req.params.genreName })
+      .then((movies) => {
+        res.status(200).json(movies);
       })
       .catch((err) => {
         console.error(err);
