@@ -33,11 +33,11 @@
           Return data (description, genre, director, image URL, whether it’s
           featured or not) about a single movie by title to the user
         </td>
-        <td>/movies/:title</td>
+        <td>/movies/movie/:title</td>
         <td>GET</td>
         <td>title</td>
         <td>
-          A JSON object hodling data about the movie. <br />
+          A JSON object hodling data about a single movie. <br />
           Example:
           <pre><code>
             {
@@ -97,6 +97,14 @@
             }
           </code></pre>
         </td>
+        <td>NONE</td>
+      </tr>
+      <tr>
+        <td>Return a list of all movies with one genre type</td>
+        <td>/movies/genre</td>
+        <td>GET</td>
+        <td>NONE</td>
+        <td>A JSON object holding data about all the movies in one specific genre.</td>
         <td>NONE</td>
       </tr>
 
