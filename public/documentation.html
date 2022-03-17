@@ -4,16 +4,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/public/scripts.css" />
+    <title>flixFolio</title>
   </head>
   <body>
-    <h1 style="text-align: center">flixFolio</h1>
+    <h1 style="text-align: center">
+      <span class="filmEmoji">🎬</span> flixFolio
+      <span class="filmEmoji">🎬</span>
+    </h1>
     <div style="text-align: center">
-      Description: This API returns descriptions of movies including genre,
-      length, date released, actors/actresses, etc.
+      Description: This API returns descriptions of movies including genre and
+      director.
     </div>
     <br />
-    <table border="1" style="margin: 10px 200px">
+    <table class="styled-table">
       <th>Request</th>
       <th>URL Endpoint</th>
       <th>HTTP Method</th>
@@ -104,7 +108,42 @@
         <td>/movies/genre</td>
         <td>GET</td>
         <td>NONE</td>
-        <td>A JSON object holding data about all the movies in one specific genre.</td>
+        <td>
+          A JSON object holding data about all the movies in one specific genre.
+        </td>
+        <td>NONE</td>
+      </tr>
+
+      <tr>
+        <td>Return a list of ALL the users.</td>
+        <td>/users</td>
+        <td>GET</td>
+        <td>NONE</td>
+        <td>A JSON object holding data about all the users.</td>
+        <td>NONE</td>
+      </tr>
+
+      <tr>
+        <td>Return data about a single user by username.</td>
+        <td>/users/:username</td>
+        <td>GET</td>
+        <td>username</td>
+        <td>
+          A JSON object holding data about the user.
+          <pre><code>
+            {
+              "id": '',
+              "userName": '',
+              "password": '',
+              "email": '',
+              "birthdate": '',
+              "FavoriteMovies": [
+                '',
+                ''
+              ]
+            }
+          </code></pre>
+        </td>
         <td>NONE</td>
       </tr>
 
@@ -147,40 +186,6 @@
           </code></pre>
         </td>
       </tr>
-
-      <tr>
-        <td>Return a list of ALL the users.</td>
-        <td>/users</td>
-        <td>GET</td>
-        <td>NONE</td>
-        <td>A JSON object holding data about all the users.</td>
-        <td>NONE</td>
-      </tr>
-
-      <tr>
-        <td>Return data about a single user by username.</td>
-        <td>/users/:username</td>
-        <td>GET</td>
-        <td>username</td>
-        <td>
-          A JSON object holding data about the user.
-          <pre><code>
-            {
-              "id": '',
-              "userName": '',
-              "password": '',
-              "email": '',
-              "birthdate": '',
-              "FavoriteMovies": [
-                '',
-                ''
-              ]
-            }
-          </code></pre>
-        </td>
-        <td>NONE</td>
-      </tr>
-
       <tr>
         <td>
           Allow users to update their user info (username, password, email,
@@ -236,7 +241,6 @@
           A JSON object with movie info. <br />Example:
           <pre><code>
             {
-              title: '',
               genre: {
                 name: '',
                 description: ''
@@ -245,7 +249,12 @@
                 name: '',
                 bio: '',
                 birthdate: ''
-              }
+              },
+              id: '',
+              title: '',
+              description: '',
+              imagepath: '',
+              featured: ''
             }
           </code></pre>
         </td>
