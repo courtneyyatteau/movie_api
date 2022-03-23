@@ -116,6 +116,28 @@ app.get(
   }
 );
 
+//get a list of movies by release year
+app.get(
+  "/movies/releaseYear/:Year",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.findOne({ ReleaseYear: req.params.Year })
+      .then((movie) => {
+        if (movie) {
+          res.json(movie);
+        } else {
+          res
+            .status(400)
+            .send("No movies in our list were released that year.");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
+
 //Add a user
 /* We’ll expect JSON in this format
 {
