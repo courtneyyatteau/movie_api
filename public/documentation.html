@@ -59,7 +59,7 @@
               description: '',
               imagepath: '',
               featured: '',
-              yeear: ''
+              year: ''
             }
           </code></pre>
         </td>
@@ -106,11 +106,21 @@
       </tr>
       <tr>
         <td>Return a list of all movies with one genre type</td>
-        <td>/movies/genre</td>
+        <td>/movies/:genre</td>
         <td>GET</td>
         <td>NONE</td>
         <td>
           A JSON object holding data about all the movies in one specific genre.
+        </td>
+        <td>NONE</td>
+      </tr>
+      <tr>
+        <td>Return a list of all movies with one release year</td>
+        <td>/movies/releaseYear/:year</td>
+        <td>GET</td>
+        <td>NONE</td>
+        <td>
+          A JSON object holding data about all the movies in one specific year.
         </td>
         <td>NONE</td>
       </tr>
