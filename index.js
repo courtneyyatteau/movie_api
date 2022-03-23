@@ -124,7 +124,7 @@ app.get(
     Movies.find({ Year: req.params.Year })
       .then((movie) => {
         if (movie) {
-          res.json(movie);
+          res.json(movie.Year);
         } else {
           res
             .status(400)
