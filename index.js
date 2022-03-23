@@ -121,7 +121,7 @@ app.get(
   "/movies/releaseYear/:Year",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Movies.find({ ReleaseYear: req.params.Year })
+    Movies.find({ Year: req.params.Year })
       .then((movie) => {
         if (movie) {
           res.json(movie);
