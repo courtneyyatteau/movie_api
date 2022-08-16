@@ -14,11 +14,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("common"));
-app.use(express.static("public"));
 app.use(cors());
 let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
+
 
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
