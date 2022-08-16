@@ -1,32 +1,75 @@
+/* Integrating Mongoose to perform CRUD operations on MongoDB data.
+-----------------------------------------------------------------------------------*/
 const mongoose = require("mongoose");
-const Models = require("./models.js");
+const Models = require("./model.js");
 
-const express = require("express"),
-  bodyParser = require("body-parser"),
-  morgan = require("morgan"),
-  uuid = require("uuid");
-const cors = require("cors");
-const { check, validationResult } = require("express-validator");
-
-const Movies = Models.Movie;
+const Movies = Models.Movie; // Refers to the model names created in "model.js"
 const Users = Models.User;
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan("common"));
-app.use(cors());
-let auth = require("./auth")(app);
-const passport = require("passport");
-require("./passport");
 
-/*mongoose.connect("mongodb://localhost:27017/flixFolioDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});*/
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+}); // Now, your connection URI will never be exposed in your “index.js” file. This is much more secure!
+/*---------------------------------------------------------------------------------*/
+
+const express = require("express"),
+  morgan = require("morgan"),
+  fs = require("fs"), // import built in node modules fs and path
+  path = require("path"),
+  uuid = require("uuid");
+
+const bodyParser = require("body-parser"),
+  methodOverride = require("method-override");
+const { send, title } = require("process");
+
+// CORS - Place before route middleware - Restrict access to API
+const cors = require("cors");
+
+const { check, validationResult } = require("express-validator");
+
+const app = express();
+
+// create a write stream (in append mode)
+// a ‘log.txt’ file is created in root directory
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
+  flags: "a",
 });
+
+app.use(morgan("combined")); // setup the logger, Mildware function to the terminal
+
+app.use(express.static("public")); // Automatically routes all requests for static files to their corresponding files within a certain folder on the server.
+
+app.use(bodyParser.json()); // support parsing of application/json type post data
+app.use(bodyParser.urlencoded({ extended: true })); //support parsing of application/x-www-form-urlencoded post data
+
+// Allows requests from all origins
+//app.use(cors());
+
+// Allow certain origins to have access, replace app.use(cors()) and use:
+let allowedOrigins = ["http://localhost:1234", "http://localhost:8080"];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn’t found on the list of allowed origins
+        let message =
+          "The CORS policy for this application doesn’t allow access from origin " +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
+let auth = require("./auth")(app); // note the app argument you're passing here. This ensures that Express is available in your “auth.js” file as well.
+
+const passport = require("passport");
+require("./passport");
+
+app.use(methodOverride());
 
 //get all movies
 app.get(
