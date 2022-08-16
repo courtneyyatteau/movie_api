@@ -1,38 +1,32 @@
-const express = require("express"),
-  fs = require("fs"),
-  path = require("path"),
-  bodyParser = require("body-parser"),
-  uuid = require("uuid");
-
-const morgan = require("morgan");
-const app = express();
 const mongoose = require("mongoose");
-const model = require("./model.js");
+const Models = require("./models.js");
 
-const Movies = model.Movie;
-const Users = model.User;
-
-mongoose.connect(process.env.CONNECTION_URI, (err) => {
-  if (err) throw err;
-  console.log("Connected to MongoDB!!!");
-});
-
-const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
-  flags: "a",
-});
-
-app.use(morgan("combined", { stream: accessLogStream }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
+const express = require("express"),
+  bodyParser = require("body-parser"),
+  morgan = require("morgan"),
+  uuid = require("uuid");
 const cors = require("cors");
 const { check, validationResult } = require("express-validator");
 
+const Movies = Models.Movie;
+const Users = Models.User;
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan("common"));
 app.use(cors());
-
 let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
+
+/*mongoose.connect("mongodb://localhost:27017/flixFolioDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});*/
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 //get all movies
 app.get(
