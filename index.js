@@ -19,6 +19,7 @@ let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
 
+
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -300,15 +301,16 @@ app.post(
       {
         $push: { FavoriteMovies: req.params.MovieID },
       },
-      { new: true } // This line makes sure that the updated document is returned
-    )
-      .then((updatedInfo) => {
-        res.json(updatedInfo);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send("Error: " + err);
-      });
+      { new: true }, // This line makes sure that the updated document is returned
+      (err, updatedUser) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send("Error: " + err);
+        } else {
+          res.json(updatedUser);
+        }
+      }
+    );
   }
 );
 
