@@ -19,13 +19,18 @@ let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
 
-
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-//get all movies
+/**
+ * Get a list of all movies
+ * Operation: GET
+ * Endpoint: /movies
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
@@ -41,7 +46,13 @@ app.get(
   }
 );
 
-//get a movie by title
+/**
+ * Get info about a movie by title
+ * Operation: GET
+ * Endpoint: /movies/movie/{:title}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get(
   "/movies/movie/:Title",
   passport.authenticate("jwt", { session: false }),
@@ -61,7 +72,13 @@ app.get(
   }
 );
 
-//get data about a genre
+/**
+ * Get description about a genre by genre name
+ * Operation: GET
+ * Endpoint: /movies/genres/{:name}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get(
   "/movies/genres/:Name",
   passport.authenticate("jwt", { session: false }),
@@ -81,7 +98,13 @@ app.get(
   }
 );
 
-//get all movies based on genre
+/**
+ * Get a list of all movies based on genre name
+ * Operation: GET
+ * Endpoint: /movies/{:genreName}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get(
   "/movies/:genreName",
   passport.authenticate("jwt", { session: false }),
@@ -97,7 +120,13 @@ app.get(
   }
 );
 
-//get information about a director by name
+/**
+ * Get information about a director by name
+ * Operation: GET
+ * Endpoint: /movies/directors/{:name}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get(
   "/movies/directors/:Name",
   passport.authenticate("jwt", { session: false }),
@@ -117,7 +146,13 @@ app.get(
   }
 );
 
-//get a list of movies by release year
+/**
+ * Get a list of all movies by release year
+ * Operation: GET
+ * Endpoint: /movies/releaseYear/{:year}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get(
   "/movies/releaseYear/:Year",
   passport.authenticate("jwt", { session: false }),
@@ -139,7 +174,6 @@ app.get(
   }
 );
 
-//Add a user
 /* We’ll expect JSON in this format
 {
   ID: Integer,
@@ -148,6 +182,13 @@ app.get(
   Email: String,
   Birthday: Date
 }*/
+/**
+ * Add a user
+ * Operation: POST
+ * Endpoint: /users
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.post(
   "/users",
   // Validation logic here for request
@@ -201,7 +242,13 @@ app.post(
   }
 );
 
-// Get all users
+/**
+ * Get a list of all users
+ * Operation: GET
+ * Endpoint: /users
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get(
   "/users",
   passport.authenticate("jwt", { session: false }),
@@ -217,7 +264,13 @@ app.get(
   }
 );
 
-// Get a user by username
+/**
+ * Get a user's info by username
+ * Operation: GET
+ * Endpoint: /users/{:username}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -237,7 +290,6 @@ app.get(
   }
 );
 
-// Update a user's info, by username
 /* We’ll expect JSON in this format
 {
   Username: String,
@@ -248,6 +300,14 @@ app.get(
   (required)
   Birthday: Date
 }*/
+
+/**
+ * Update a user's info by username
+ * Operation: PUT
+ * Endpoint: /users/{:username}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.put(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -291,7 +351,13 @@ app.put(
   }
 );
 
-// Add a movie to a user's list of favorites
+/**
+ * Add a user's favorite movie by username and movie ID
+ * Operation: POST
+ * Endpoint: /users/{:username}/movies/{:movieid}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.post(
   "/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
@@ -314,7 +380,13 @@ app.post(
   }
 );
 
-//delete a user's favorite movie by ID
+/**
+ * Delete a user's favorite movie by username and movie ID
+ * Operation: DELETE
+ * Endpoint: /users/{:username}/{:movieid}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.delete(
   "/users/:Username/:MovieID",
   passport.authenticate("jwt", { session: false }),
@@ -336,7 +408,13 @@ app.delete(
   }
 );
 
-// Delete a user by username
+/**
+ * Delete a user by username
+ * Operation: DELETE
+ * Endpoint: /users/{:username}
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.delete(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -356,18 +434,36 @@ app.delete(
   }
 );
 
-//give the static content in the documentation file
+/**
+ * give the static content in the documentation file
+ * Operation: GET
+ * Endpoint: /documentation
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get("/documentation", (req, res) => {
   res.sendFile("public/documentation.html", { root: __dirname });
 });
 
-//error-handling
+/**
+ * handles any errors
+ * @param {express.Errback} err
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
 });
 
-//Welcome Message
+/**
+ * directs to welcome page (index.html)
+ * Operation: GET
+ * Endpoint: /
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 app.get("/", (req, res) => {
   res.send("Welcome to Flix Folio!");
 });
